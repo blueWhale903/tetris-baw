@@ -28,7 +28,7 @@ export function useTetris() {
   const [lineCleared, setLineCleared] = useState(0);
   
   if (lineCleared >= lineRequired) {
-    setLevel((prevlevel) => prevlevel + 1);
+    setLevel((prevlevel: number) => prevlevel + 1);
     currentTickSpeed -= 80;
     lineRequired += (level+1) * 5;
     setTickSpeed(currentTickSpeed);
@@ -99,15 +99,7 @@ export function useTetris() {
       newBlock,
     });
     setIsCommitting(false);
-  }, [
-    board,
-    dispatchBoardState,
-    droppingBlock,
-    droppingColumn,
-    droppingRow,
-    droppingShape,
-    upcomingBlocks,
-  ]);
+  }, [board, dispatchBoardState, droppingBlock, droppingColumn, droppingRow, droppingShape, level, lineCleared, upcomingBlocks]);
 
   const gameTick = useCallback(() => {
     if (isCommitting) {
