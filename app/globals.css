@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: rgb(30, 30, 30);
+    background-image: linear-gradient(0, rgb(30, 30, 30), rgb(40, 40, 40));
+    color: #f1f1f1;
+    height: 100vh;
+}
+
+h1 {
+    font-family: 'Protest Strike', 'Courier New', Courier, monospace;
+    font-weight: 900;
+}
+
+.I {
+    /* background-color: rgb(80, 227, 230); */
+    background-color: 	#e9ecef;
+}
+
+.J {
+    /* background-color: rgb(36, 95, 223); */
+    background-color: #dee2e6;
+}
+
+.L {
+    /* background-color: rgb(223, 173, 36); */
+    background-color: 	#ced4da;
+}
+
+.O {
+    /* background-color: rgb(223, 217, 36); */
+    background-color: #adb5bd;
+}
+
+.S {
+    /* background-color: rgb(48, 211, 56); */
+    background-color: #6c757d;
+}
+
+.T {
+    /* background-color: rgb(132, 61, 198); */
+    background-color: #495057;
+}
+
+.Z {
+    /* background-color: rgb(227, 78, 78); */
+    background-color: #343a40;
+}
+
+.Empty {
+    background-color: none;
+}
+
+.hidden-cell {
+    visibility: hidden;
+}
