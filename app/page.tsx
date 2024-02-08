@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   return (
-    <main className={`grid grid-cols-[auto_200px_400px_200px_auto] ${luckiest_guy.className}`}>
+    <main className={`h-full grid grid-cols-[auto_200px_400px_200px_auto] ${luckiest_guy.className}`}>
       
       <div className="flex flex-col justify-center gap-20 items-center col-start-2">
         <Score score={score} />
