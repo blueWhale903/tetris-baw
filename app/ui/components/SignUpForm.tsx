@@ -2,7 +2,8 @@
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFormState } from "react-dom";
+import { luckiest_guy } from "../fonts";
+import Link from "next/link";
 
 const FormSchema = z
   .object({
@@ -55,19 +56,23 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="m-auto bg-[#333] w-fit p-5">
-      <h3 className="h-3 text-center">SIGN UP</h3>
+    <div className="flex flex-col justify-center items-center h-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 justify-center items-center text-black"
+        className="flex flex-col gap-5 justify-center items-center text-white bg-[#333] border-white border-2 px-10 py-12 rounded-md"
       >
+        <h3
+          className={`${luckiest_guy.className} text-xl text-center text-white`}
+        >
+          WELCOME TO TETRIS B&W
+        </h3>
         <label htmlFor="username"></label>
         <input
           type="text"
           id="username"
           placeholder="username"
           {...register("name")}
-          className="p-2"
+          className="p-2 bg-[#222] rounded-md"
         />
         {errors.name && (
           <div className="text-red-500">{errors.name.message}</div>
@@ -77,17 +82,17 @@ export default function SignUpForm() {
           id="password"
           placeholder="password"
           {...register("password")}
-          className="p-2"
+          className="p-2 bg-[#222] rounded-md"
         />
         {errors.password && (
           <div className="text-red-500">{errors.password.message}</div>
         )}
         <input
           type="password"
-          id="repassword"
+          id="confirmPassword"
           placeholder="retype password"
           {...register("confirmPassword")}
-          className="p-2"
+          className="p-2 bg-[#222] rounded-md"
         />
         {errors.confirmPassword && (
           <div className="text-red-500">{errors.confirmPassword.message}</div>
@@ -95,9 +100,17 @@ export default function SignUpForm() {
         <button
           disabled={isSubmitting}
           type="submit"
-          className="cursor-pointer bg-white p-2"
+          className="cursor-pointer bg-white text-black p-2 w-full rounded-md"
         >
           {isSubmitting ? "Loading" : "Sign up"}
+        </button>
+        <p>OR</p>
+        <button
+          disabled={isSubmitting}
+          type="submit"
+          className="cursor-pointer bg-[#666] p-2 w-full rounded-md"
+        >
+          <Link href="/signin">Sign in</Link>
         </button>
       </form>
     </div>

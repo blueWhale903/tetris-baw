@@ -2,7 +2,7 @@ import SignIpForm from "@/app/ui/components/SignInForm";
 
 export default function Page() {
   return (
-    <main>
+    <main className="h-full">
       <SignIpForm />
     </main>
   );

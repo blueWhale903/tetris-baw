@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     CredentialsProvider({
-      name2: "Credentials",
+      name: "Credentials",
 
       credentials: {
         username: { label: "Username", type: "text", placeholder: "username" },
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const existingUser = await db.user.findUnique({
-          where: { name: credentials?.username },
+          where: { username: credentials?.username },
         });
 
         if (!existingUser) {
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: existingUser.id,
-          username: existingUser.name,
+          username: `${existingUser.username}`,
           bestScore: existingUser.bestScore,
         };
       },
@@ -57,17 +57,17 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
-          name: user.name,
+          username: user.username,
         };
       }
       return token;
     },
-    async session({ session, user }) {
+    async session({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
-          name: user.name,
+          username: token.username,
         },
       };
     },
