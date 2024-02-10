@@ -2,6 +2,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import Profile from "../ui/components/Profile";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -19,5 +20,9 @@ export default async function Page() {
     return Error("Something went wrong!");
   }
 
-  return <main></main>;
+  return (
+    <main>
+      <Profile username={user.username} bestScore={user.bestScore} />
+    </main>
+  );
 }

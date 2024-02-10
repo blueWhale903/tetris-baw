@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { luckiest_guy } from "../fonts";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   username: z
@@ -22,7 +22,7 @@ const FormSchema = z.object({
 type FormFields = z.infer<typeof FormSchema>;
 
 export default function SignInForm() {
-  const router = useRouter();
+  const { push } = useRouter();
 
   const {
     register,
@@ -41,8 +41,7 @@ export default function SignInForm() {
         redirect: false,
       });
       if (signInData?.ok) {
-        console.log("sign in successfully!");
-        router.push("/profile");
+        push("/profile");
       } else {
         setError("root", {
           message: "Username or Password are Incorrect!",
@@ -85,7 +84,6 @@ export default function SignInForm() {
         {errors.password && (
           <div className="text-red-500">{errors.password.message}</div>
         )}
-
         <button
           disabled={isSubmitting}
           type="submit"
@@ -93,6 +91,9 @@ export default function SignInForm() {
         >
           {isSubmitting ? "Loading" : "Sign in"}
         </button>
+        {errors.root && (
+          <div className="text-red-500">{errors.root.message}</div>
+        )}{" "}
       </form>
     </div>
   );

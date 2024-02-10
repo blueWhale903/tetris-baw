@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const { name, password } = userSchema.parse(body);
 
     const existUserByUsername = await db.user.findUnique({
-      where: { name: name },
+      where: { username: name },
     });
 
     if (existUserByUsername) {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const hashedPassword = await hash(password, 10);
     const newUser = await db.user.create({
       data: {
-        name: name,
+        username: name,
         password: hashedPassword,
       },
     });

@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Block, BlockShape, BoardShape, EmptyCell, SHAPES } from '../ui/types';
-import { useInterval } from './useInterval';
+import { useCallback, useEffect, useState } from "react";
+import { Block, BlockShape, BoardShape, EmptyCell, SHAPES } from "../ui/types";
+import { useInterval } from "./useInterval";
 import {
   useTetrisBoard,
   hasCollisions,
   BOARD_HEIGHT,
   getEmptyBoard,
   getRandomBlock,
-} from './useTetrisBoard';
+} from "./useTetrisBoard";
+import { updateBestScore } from "@/lib/actions";
 
 enum TickSpeed {
   Normal = 800,
@@ -26,11 +27,11 @@ export function useTetris() {
   const [tickSpeed, setTickSpeed] = useState<TickSpeed | null>(null);
   const [level, setLevel] = useState(1);
   const [lineCleared, setLineCleared] = useState(0);
-  
+
   if (lineCleared >= lineRequired) {
     setLevel((prevlevel: number) => prevlevel + 1);
     currentTickSpeed -= 80;
-    lineRequired += (level+1) * 5;
+    lineRequired += (level + 1) * 5;
     setTickSpeed(currentTickSpeed);
   }
 
@@ -52,7 +53,7 @@ export function useTetris() {
     setIsCommitting(false);
     setIsPlaying(true);
     setTickSpeed(TickSpeed.Normal);
-    dispatchBoardState({ type: 'start' });
+    dispatchBoardState({ type: "start" });
   }, [dispatchBoardState]);
 
   const commitPosition = useCallback(() => {
@@ -88,18 +89,29 @@ export function useTetris() {
     if (hasCollisions(board, SHAPES[newBlock].shape, 0, 3)) {
       setIsPlaying(false);
       setTickSpeed(null);
+      updateBestScore(score);
     } else {
       setTickSpeed(currentTickSpeed);
     }
     setUpcomingBlocks(newUpcomingBlocks);
     setScore((prevScore) => prevScore + getPoints(numCleared, level));
     dispatchBoardState({
-      type: 'commit',
+      type: "commit",
       newBoard: [...getEmptyBoard(BOARD_HEIGHT - newBoard.length), ...newBoard],
       newBlock,
     });
     setIsCommitting(false);
-  }, [board, dispatchBoardState, droppingBlock, droppingColumn, droppingRow, droppingShape, level, lineCleared, upcomingBlocks]);
+  }, [
+    board,
+    dispatchBoardState,
+    droppingBlock,
+    droppingColumn,
+    droppingRow,
+    droppingShape,
+    level,
+    lineCleared,
+    upcomingBlocks,
+  ]);
 
   const gameTick = useCallback(() => {
     if (isCommitting) {
@@ -110,7 +122,7 @@ export function useTetris() {
       setTickSpeed(TickSpeed.Sliding);
       setIsCommitting(true);
     } else {
-      dispatchBoardState({ type: 'drop' });
+      dispatchBoardState({ type: "drop" });
     }
   }, [
     board,
@@ -141,14 +153,14 @@ export function useTetris() {
     const updateMovementInterval = () => {
       clearInterval(moveIntervalID);
       dispatchBoardState({
-        type: 'move',
+        type: "move",
         isPressingLeft,
         isPressingRight,
       });
-      
+
       moveIntervalID = window.setInterval(() => {
         dispatchBoardState({
-          type: 'move',
+          type: "move",
           isPressingLeft,
           isPressingRight,
         });
@@ -160,49 +172,49 @@ export function useTetris() {
         return;
       }
 
-      if (event.key === 'ArrowDown') {
+      if (event.key === "ArrowDown") {
         setTickSpeed(TickSpeed.Fast);
       }
 
-      if (event.key === 'ArrowUp') {
+      if (event.key === "ArrowUp") {
         dispatchBoardState({
-          type: 'move',
+          type: "move",
           isRotating: true,
         });
       }
 
-      if (event.key === 'ArrowLeft') {
+      if (event.key === "ArrowLeft") {
         isPressingLeft = true;
         updateMovementInterval();
       }
 
-      if (event.key === 'ArrowRight') {
+      if (event.key === "ArrowRight") {
         isPressingRight = true;
         updateMovementInterval();
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowDown') {
+      if (event.key === "ArrowDown") {
         setTickSpeed(currentTickSpeed);
       }
 
-      if (event.key === 'ArrowLeft') {
+      if (event.key === "ArrowLeft") {
         isPressingLeft = false;
         updateMovementInterval();
       }
 
-      if (event.key === 'ArrowRight') {
+      if (event.key === "ArrowRight") {
         isPressingRight = false;
         updateMovementInterval();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
       clearInterval(moveIntervalID);
       setTickSpeed(currentTickSpeed);
     };
@@ -226,7 +238,7 @@ export function useTetris() {
     score,
     upcomingBlocks,
     level,
-    lineCleared
+    lineCleared,
   };
 }
 
@@ -243,7 +255,7 @@ function getPoints(numCleared: number, level: number): number {
     case 4:
       return 1200 * level;
     default:
-      throw new Error('Unexpected number of rows cleared');
+      throw new Error("Unexpected number of rows cleared");
   }
 }
 
