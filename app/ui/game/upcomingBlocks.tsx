@@ -22,7 +22,7 @@ export default function UpcomingBlocks({
                   <div key={rowIndex} className="flex">
                     {row.map((isSet, cellIndex) => {
                       const cellClass = isSet ? block : "hidden-cell";
-                      const key = "${blockIndex}-${rowIndex}-${cellIndex}";
+                      const key = `${blockIndex}-${rowIndex}-${cellIndex}`;
                       return <Cell key={key} type={cellClass} />;
                     })}
                   </div>

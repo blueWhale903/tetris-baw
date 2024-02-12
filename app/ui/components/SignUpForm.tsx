@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { luckiest_guy } from "../fonts";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z
   .object({
@@ -26,6 +27,8 @@ const FormSchema = z
 type FormFields = z.infer<typeof FormSchema>;
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -46,7 +49,7 @@ export default function SignUpForm() {
       });
 
       if (response.ok) {
-        console.log(response);
+        router.push("signin");
       } else if (response.status == 409) {
         setError("name", { message: "username has already taken" });
       }
@@ -105,11 +108,7 @@ export default function SignUpForm() {
           {isSubmitting ? "Loading" : "Sign up"}
         </button>
         <p>OR</p>
-        <button
-          disabled={isSubmitting}
-          type="submit"
-          className="cursor-pointer bg-[#666] p-2 w-full rounded-md"
-        >
+        <button className="cursor-pointer bg-[#666] p-2 w-full rounded-md">
           <Link href="/signin">Sign in</Link>
         </button>
       </form>

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { luckiest_guy } from "../fonts";
 import { redirect, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const FormSchema = z.object({
   username: z
@@ -91,6 +92,13 @@ export default function SignInForm() {
         >
           {isSubmitting ? "Loading" : "Sign in"}
         </button>
+        <p>OR</p>
+        <Link
+          className="cursor-pointer bg-[#ddd] text-black p-2 w-full rounded-md text-center"
+          href="/signup"
+        >
+          Sign up
+        </Link>
         {errors.root && (
           <div className="text-red-500">{errors.root.message}</div>
         )}{" "}

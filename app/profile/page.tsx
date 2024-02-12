@@ -21,7 +21,7 @@ export default async function Page() {
   }
 
   return (
-    <main>
+    <main className="h-full">
       <Profile
         userId={user.id}
         username={user.username}
