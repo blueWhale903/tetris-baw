@@ -120,6 +120,7 @@ export async function fetchHistoryByUserId(id: string) {
     orderBy: {
       date: "desc",
     },
+    take: 7,
   });
 
   if (!history) return [];
@@ -140,6 +141,7 @@ export async function fetchUserByUsername(username: string) {
 export async function getUsers() {
   const users = await db.user.findMany({
     orderBy: { bestScore: "desc" },
+    take: 10,
   });
 
   return users;
