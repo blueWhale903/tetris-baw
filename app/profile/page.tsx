@@ -22,7 +22,11 @@ export default async function Page() {
 
   return (
     <main>
-      <Profile username={user.username} bestScore={user.bestScore} />
+      <Profile
+        userId={user.id}
+        username={user.username}
+        bestScore={user.bestScore}
+      />
     </main>
   );
 }

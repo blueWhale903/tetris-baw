@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { db } from "./db";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
-import { getSession } from "next-auth/react";
+import { revalidatePath } from "next/cache";
 
 const editname = z.object({
   username: z.string(),
@@ -38,8 +38,8 @@ export async function editUsername(formData: FormData) {
           username: username,
         },
       });
-      session.user.username = username;
     }
+    revalidatePath("/profile");
   } catch (error) {
     console.error(error);
   }
@@ -95,18 +95,52 @@ export async function CreateHistory(score: number, level: number) {
       return;
     }
 
-    const currentBestScore = user.bestScore;
-
-    const data = {
-      bestScore: Math.max(currentBestScore, score),
-    };
-
-    await db.user.update({
-      where: { username: user.username },
-      data: data,
+    const newHistory = await db.history.create({
+      data: {
+        score: score,
+        level: level,
+        username: user.username,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
     });
-    console.log("update best score");
+
+    console.log("create history");
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function fetchHistoryByUserId(id: string) {
+  const history = await db.history.findMany({
+    where: { userId: id },
+    orderBy: {
+      date: "desc",
+    },
+  });
+
+  if (!history) return [];
+
+  return history;
+}
+
+export async function fetchUserByUsername(username: string) {
+  const user = await db.user.findUnique({
+    where: { username: username },
+  });
+
+  if (!user) throw Error("User not found");
+
+  return user;
+}
+
+export async function getUsers() {
+  const users = await db.user.findMany({
+    orderBy: { bestScore: "desc" },
+  });
+
+  return users;
 }

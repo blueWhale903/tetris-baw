@@ -8,7 +8,7 @@ import {
   getEmptyBoard,
   getRandomBlock,
 } from "./useTetrisBoard";
-import { updateBestScore } from "@/lib/actions";
+import { CreateHistory, updateBestScore } from "@/lib/actions";
 
 enum TickSpeed {
   Normal = 800,
@@ -90,6 +90,7 @@ export function useTetris() {
       setIsPlaying(false);
       setTickSpeed(null);
       updateBestScore(score);
+      CreateHistory(score, level);
     } else {
       setTickSpeed(currentTickSpeed);
     }
@@ -110,6 +111,7 @@ export function useTetris() {
     droppingShape,
     level,
     lineCleared,
+    score,
     upcomingBlocks,
   ]);
 
