@@ -1,7 +1,16 @@
 import { getUsers } from "@/lib/actions";
 
-export default async function Leadercards() {
-  const users = await getUsers();
+export default async function Leadercards({
+  users,
+}: {
+  users: {
+    id: string;
+    username: string;
+    password: string;
+    bestScore: number;
+    createAt: Date;
+  }[];
+}) {
   return (
     <div className="flex flex-col gap-3">
       {users?.map((user, index) => (
