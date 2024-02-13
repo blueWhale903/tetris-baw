@@ -5,6 +5,7 @@ import { db } from "./db";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 const editname = z.object({
   username: z.string(),
@@ -72,6 +73,7 @@ export async function updateBestScore(score: number) {
       where: { username: user.username },
       data: data,
     });
+    revalidatePath("/leaderboard");
     console.log("update best score");
   } catch (error) {
     console.error(error);
@@ -109,7 +111,6 @@ export async function CreateHistory(score: number, level: number) {
     });
 
     revalidatePath("/profile");
-    revalidatePath("/leaderboard");
 
     console.log("create history");
   } catch (error) {
@@ -118,6 +119,7 @@ export async function CreateHistory(score: number, level: number) {
 }
 
 export async function fetchHistoryByUserId(id: string) {
+  noStore();
   const history = await db.history.findMany({
     where: { userId: id },
     orderBy: {
@@ -132,6 +134,7 @@ export async function fetchHistoryByUserId(id: string) {
 }
 
 export async function fetchUserByUsername(username: string) {
+  noStore();
   const user = await db.user.findUnique({
     where: { username: username },
   });
@@ -142,6 +145,7 @@ export async function fetchUserByUsername(username: string) {
 }
 
 export async function getUsers() {
+  noStore();
   const users = await db.user.findMany({
     orderBy: { bestScore: "desc" },
     take: 10,
