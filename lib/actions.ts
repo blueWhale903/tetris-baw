@@ -108,6 +108,9 @@ export async function CreateHistory(score: number, level: number) {
       },
     });
 
+    revalidatePath("/profile");
+    revalidatePath("/leaderboard");
+
     console.log("create history");
   } catch (error) {
     console.error(error);
