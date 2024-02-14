@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Profile from "../ui/components/Profile";
+import SignoutBtn from "../ui/components/SignoutBtn";
+import { Sign } from "crypto";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -27,6 +29,7 @@ export default async function Page() {
         username={user.username}
         bestScore={user.bestScore}
       />
+      <SignoutBtn />
     </main>
   );
 }
