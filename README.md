@@ -1,7 +1,7 @@
 # Tetris Game
 
 A feature-rich Tetris game built with **React**, **Next.js**, and **Prisma**. This project showcases a combination of front-end gameplay development and back-end user management, including a leaderboard, user profiles, and game history.
-
+demo page: https://tetris-baw-848b-9ti75fk6q-hoang-gia-longs-projects.vercel.app/
 ## Features
 - **Tetris Game Mechanics**: Playable Tetris with classic controls.
 - **Leaderboard**: View global rankings based on high scores.
